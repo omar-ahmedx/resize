@@ -16,7 +16,9 @@ function download() {
   let canvas = document.querySelector("#outputCanvas");
   let img = canvas.toDataURL("image/png");
   document.querySelector("#download").href = img;
+  console.log(canvas);
 }
+document.querySelector("#download").addEventListener("click", download);
 /*
 function resize() {
   let width = +document.querySelector('#width').value;
@@ -217,7 +219,7 @@ function crop() {
     pointsArray.push(point[0]);
     pointsArray.push(point[1]);
   });
-  const imageHeight = document.getElementById("imageSrc").height;
+  const imageHeight = +document.getElementById("height").value;
   const imageWidth = document.getElementById("imageSrc").width;
   const svgCropHeight =
     document.querySelector("#input-container svg").getAttribute("height") - 80;
@@ -231,17 +233,17 @@ function crop() {
   });
   let src = cv.imread("imageSrc");
   let dst = new cv.Mat();
-  let dsize = new cv.Size(imageHeight, imageWidth);
+  let dsize = new cv.Size(imageWidth, imageHeight);
   let srcTri = cv.matFromArray(4, 1, cv.CV_32FC2, pointsArray);
   let dstTri = cv.matFromArray(4, 1, cv.CV_32FC2, [
     0,
     0,
-    imageHeight,
-    0,
-    imageHeight,
     imageWidth,
     0,
     imageWidth,
+    imageHeight,
+    0,
+    imageHeight,
   ]);
   let M = cv.getPerspectiveTransform(srcTri, dstTri);
   cv.warpPerspective(
